@@ -1,0 +1,13 @@
+{
+  "folders": [
+    {
+      "path": "first-app"
+    },
+    {
+      "path": "cilent-site"
+    }
+  ],
+  "settings": {
+    "liveServer.settings.multiRootWorkspaceName": "cilent-site"
+  }
+}
