@@ -7,10 +7,8 @@ use Illuminate\Http\Request;
 
 class UserController extends Controller
 {
-    public function index(Request $request)
+    public function index()
     {
-        // $currentUser = $request->user();
-
         $users = User::oldest()->with(['roles'])->where(function ($i) {
             $search = request('search');
 

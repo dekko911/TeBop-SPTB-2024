@@ -1,5 +1,7 @@
 let hasToken = Cookies.get("auth_token");
 let hasAbilities = Cookies.get("abilities");
+let hasName = Cookies.get("name");
+let hasEmail = Cookies.get("email");
 
 if (hasToken) {
   console.log("Has Token : " + hasToken);
@@ -30,9 +32,13 @@ if (formLogin) {
 
           let abilities = res.data.token.accessToken.abilities;
 
+          let name = res.data.user.name;
+          let email = res.data.user.email;
+
           Cookies.set("auth_token", token);
           Cookies.set("abilities", abilities);
-          // console.log(abilities);
+          Cookies.set("name", name);
+          Cookies.set("email", email);
 
           if (abilities == "admin") {
             window.location.href = "/admin/dashboard.html";

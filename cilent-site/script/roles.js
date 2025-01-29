@@ -182,6 +182,8 @@ if (logout) {
   logout.addEventListener("click", function () {
     Cookies.remove("auth_token");
     Cookies.remove("abilities");
+    Cookies.remove("name");
+    Cookies.remove("email");
 
     alert("Success Logout !");
 
