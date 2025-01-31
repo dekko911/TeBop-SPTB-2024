@@ -23,6 +23,7 @@ Route::post('/sign_up', [UserController::class, 'store'])->name('sign_up');
 
 // untuk route admin
 Route::middleware(['auth:sanctum', 'ability:admin'])->group(function () {
+    // Route::get('/profile', [UserController::class, 'show']);
     Route::apiResource('/admin/t_genres', GenreController::class);
     Route::apiResource('/admin/t_studios', StudioController::class);
     Route::apiResource('/admin/t_movies', MovieController::class);
@@ -36,6 +37,7 @@ Route::middleware(['auth:sanctum', 'ability:admin'])->group(function () {
 
 // untuk route user
 Route::middleware(['auth:sanctum', 'ability:user,writer,editor'])->group(function () {
+    // Route::get('/user/profile', [UserController::class, 'show']);
     Route::apiResource('/user/t_studios', StudioController::class);
     Route::apiResource('/user/users', UserController::class);
     Route::apiResource('/user/t_movies', MovieController::class);
