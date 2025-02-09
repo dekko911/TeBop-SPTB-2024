@@ -22,7 +22,9 @@ if (user_form) {
       alert("data has added !");
       window.location.href = "login.html";
     } catch (error) {
-      console.error(error);
+      let emailError = error.response?.data?.message;
+
+      alert(emailError);
     }
   });
 }

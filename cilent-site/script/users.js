@@ -26,7 +26,7 @@ async function getData() {
 
   if (data) {
     if (data.status && data.status == "failed") {
-      alert("Your not provided in this page!");
+      alert(data.message);
     }
   }
 
@@ -36,6 +36,15 @@ async function getData() {
     let users = data.users;
 
     if (users.length > 0) {
+      // jika ada data, lakukan loading data
+
+      // let loading = document.getElementById("loading");
+      // if (loading) {
+      //   loading.style.display = "none";
+      // } else {
+      //   loading.style.display = "block";
+      // }
+
       let elementForTbody = "";
 
       users.forEach((user, key) => {

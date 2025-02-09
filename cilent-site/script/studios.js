@@ -28,7 +28,7 @@ async function getData() {
 
   if (data) {
     if (data.status && data.status == "failed") {
-      alert("Your not provided in this page!");
+      alert(data.message);
     }
   }
 
