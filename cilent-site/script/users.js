@@ -165,6 +165,9 @@ if (user_form) {
     } catch (error) {
       // untuk peringatan tidak ada masukan input
       let errors = error.response?.data?.errors;
+      let emailError = error.response?.data?.message;
+
+      alert(emailError);
 
       if (errors) {
         if (errors.name) {

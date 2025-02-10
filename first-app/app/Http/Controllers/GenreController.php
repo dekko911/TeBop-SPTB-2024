@@ -24,15 +24,21 @@ class GenreController extends Controller
 
     public function store(Request $request)
     {
-        $validated = $request->validate([
-            'genre' => ['required'],
-        ]);
+        try {
+            $validated = $request->validate([
+                'genre' => ['required'],
+            ]);
 
-        $genre = Genre::create($validated);
+            $genre = Genre::create($validated);
 
-        return response()->json([
-            'genre' => $genre,
-        ]);
+            return response()->json([
+                'genre' => $genre,
+            ]);
+        } catch (\Exception) {
+            return response()->json([
+                'message' => 'Data has already exist.',
+            ], 422);
+        }
     }
 
     public function destroy($id)

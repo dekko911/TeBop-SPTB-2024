@@ -43,40 +43,40 @@ async function getData() {
 
       payments.forEach((payment, key) => {
         elementForTbody += `
-                  <tr class="text-center">
-                      <td class="align-middle text-sm">${key + 1}</td>
-                      <td class="align-middle text-sm">
-                      ${payment?.ticket?.code_ticket}
-                      </td>
-                      <td class="align-middle text-sm">
-                      ${payment?.user?.name}
-                      </td>
-                      <td class="align-middle text-sm">
-                      ${payment.payment_date}
-                      </td>
-                      <td class="align-middle text-sm">${payment.price}</td>
-                      <td class="align-middle text-sm">${payment.status}</td>
-                        <td class="ps-4">
-                        <button type="button" class="btn btn-warning my-auto" onclick="update(${
-                          payment.id
-                        }, 
-                        '${payment.ticket_id}', 
-                        '${payment.user_id}', 
-                        '${payment.payment_date}', 
-                        '${payment.price}', 
-                        '${payment.status}')"
-                        >
-                          Edit
-                        </button>
-                          <button
-                          type="button"
-                          class="btn btn-danger my-auto"
-                          onclick="delete_payment(${payment.id})"
-                          >
-                          Delete
-                          </button>
-                        </td>
-                  </tr>`;
+        <tr class="text-center">
+            <td class="align-middle text-sm">${key + 1}</td>
+            <td class="align-middle text-sm">
+            ${payment?.ticket?.code_ticket}
+            </td>
+            <td class="align-middle text-sm">
+            ${payment?.user?.name}
+            </td>
+            <td class="align-middle text-sm">
+            ${payment.payment_date}
+            </td>
+            <td class="align-middle text-sm">${payment.price}</td>
+            <td class="align-middle text-sm">${payment.status}</td>
+              <td class="ps-4">
+              <button type="button" class="btn btn-warning my-auto" onclick="update(${
+                payment.id
+              }, 
+              '${payment.ticket_id}', 
+              '${payment.user_id}', 
+              '${payment.payment_date}', 
+              '${payment.price}', 
+              '${payment.status}')"
+              >
+                Edit
+              </button>
+                <button
+                type="button"
+                class="btn btn-danger my-auto"
+                onclick="delete_payment(${payment.id})"
+                >
+                Delete
+                </button>
+              </td>
+        </tr>`;
       });
 
       data_payments_entry.innerHTML = elementForTbody;

@@ -24,22 +24,28 @@ class RoleController extends Controller
 
     public function store(Request $request)
     {
-        $validated = $request->validate([
-            'user_id' => ['required'],
-            'name' => ['required'],
-        ]);
+        try {
+            $validated = $request->validate([
+                'user_id' => ['required'],
+                'name' => ['required'],
+            ]);
 
-        if ($validated['name'] == 'admin') {
+            if ($validated['name'] == 'admin') {
+                return response()->json([
+                    'message' => 'Nama Role Tidak Boleh Bernama Admin.',
+                ], 422);
+            }
+
+            $role = Role::create($validated);
+
             return response()->json([
-                'message' => 'Role name cannot be admin.',
-            ], 422); // kalau berisi kode status 422, akan di tampilkan di console log
+                'role' => $role
+            ]);
+        } catch (\Exception) {
+            return response()->json([
+                'message' => 'Data has already exist.'
+            ], 422);
         }
-
-        $role = Role::create($validated);
-
-        return response()->json([
-            'role' => $role
-        ]);
     }
 
     public function destroy($id)

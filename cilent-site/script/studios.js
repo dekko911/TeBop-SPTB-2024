@@ -42,18 +42,18 @@ async function getData() {
 
       studios.forEach((studio, key) => {
         elementForTbody += `
-              <tr class="text-center">
-                  <td class="align-middle text-sm">${key + 1}</td>
-                  <td class="align-middle text-sm">${studio.studio}</td>
-                  <td>
-                      <button type="button"
-                      class="btn btn-danger my-auto"
-                      onclick="delete_studio(${studio.id})"
-                      >
-                      Delete
-                      </button>
-                  </td>
-              </tr>`;
+          <tr class="text-center">
+              <td class="align-middle text-sm">${key + 1}</td>
+              <td class="align-middle text-sm">${studio.studio}</td>
+              <td>
+                  <button type="button"
+                  class="btn btn-danger my-auto"
+                  onclick="delete_studio(${studio.id})"
+                  >
+                  Delete
+                  </button>
+              </td>
+          </tr>`;
       });
 
       data_studios_entry.innerHTML = elementForTbody;
@@ -99,6 +99,9 @@ if (studio_form) {
       getData();
     } catch (error) {
       let errors = error.response?.data?.errors;
+      let dataError = error.response?.data?.message;
+
+      alert(dataError);
 
       if (errors) {
         if (errors.studio) {

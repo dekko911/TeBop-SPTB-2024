@@ -37,9 +37,9 @@ class UserController extends Controller
                 'user' => $user,
             ]);
         } catch (\Exception) {
-            // bagian ini tidak bisa di show ke halaman user, hanya bisa terlihat di log, kecuali kalau bisa di tangkap dari method catch yang ada di frontend
+            // hanya bisa terlihat di log (actually not), kecuali kalau bisa di tangkap dari method catch yang ada di javascript
             return response()->json([
-                'message' => 'Email already exists.',
+                'message' => 'Email has already exist.',
             ], 422);
         }
     }
