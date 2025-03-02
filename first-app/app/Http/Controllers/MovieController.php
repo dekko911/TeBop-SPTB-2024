@@ -37,10 +37,10 @@ class MovieController extends Controller
             return response()->json([
                 'movie' => $movie,
             ]);
-        } catch (\Exception) {
-            return response()->json([
-                'message' => 'Data has already exist.'
-            ], 422);
+        } catch (\Exception $e) {
+            // return response()->json([
+            //     'message' => 'Data has already exist.'
+            // ], 422);
         }
     }
 

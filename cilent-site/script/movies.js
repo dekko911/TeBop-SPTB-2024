@@ -161,9 +161,6 @@ if (movie_form) {
       getData();
     } catch (error) {
       let errors = error.response?.data?.errors;
-      let dataError = error.response?.data?.message;
-
-      alert(dataError);
 
       if (errors) {
         if (errors.title) {

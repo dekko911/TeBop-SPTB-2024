@@ -34,10 +34,10 @@ class StudioController extends Controller
             return response()->json([
                 'studio' => $studio,
             ]);
-        } catch (\Exception) {
-            return response()->json([
-                'message' => 'Data has already exist.'
-            ], 422);
+        } catch (\Exception $e) {
+            // return response()->json([
+            //     'message' => 'Data has already exist.'
+            // ], 422);
         }
     }
 

@@ -34,10 +34,10 @@ class GenreController extends Controller
             return response()->json([
                 'genre' => $genre,
             ]);
-        } catch (\Exception) {
-            return response()->json([
-                'message' => 'Data has already exist.',
-            ], 422);
+        } catch (\Exception $e) {
+            // return response()->json([
+            //     'message' => 'Data has already exist.',
+            // ], 422);
         }
     }
 

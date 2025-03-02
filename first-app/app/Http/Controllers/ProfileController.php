@@ -25,6 +25,6 @@ class ProfileController extends Controller
             'abilities' => $roles
         ]);
 
-        // this is thing like a backup, if you use it sometimes it will work, maybe.
+        // this thing likes a backup, if you use it, sometimes it will work, maybe.
     }
 }

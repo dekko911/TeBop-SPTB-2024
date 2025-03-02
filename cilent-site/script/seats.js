@@ -155,9 +155,9 @@ if (seat_form) {
       getData();
     } catch (error) {
       let errors = error.response?.data?.errors;
-      let dataError = error.response?.data?.message;
+      // let dataError = error.response?.data?.message;
 
-      alert(dataError);
+      // alert(dataError);
 
       if (errors) {
         if (errors.show_id) {

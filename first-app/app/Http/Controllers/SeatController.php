@@ -36,10 +36,10 @@ class SeatController extends Controller
             return response()->json([
                 'seat' => $seat,
             ]);
-        } catch (\Exception) {
-            return response()->json([
-                'message' => 'Data has already exist.'
-            ], 422);
+        } catch (\Exception $e) {
+            // return response()->json([
+            //     'message' => 'Data has already exist.'
+            // ], 422);
         }
     }
 
