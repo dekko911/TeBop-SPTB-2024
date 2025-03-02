@@ -1,7 +1,7 @@
 let user_form = document.querySelector("#user-form");
 
 if (user_form) {
-  const res = "http://127.0.0.1:8000/api/sign_up";
+  const url = "http://127.0.0.1:8000/api/sign_up";
 
   user_form.addEventListener("submit", async function (e) {
     e.preventDefault();
@@ -17,14 +17,16 @@ if (user_form) {
         password,
       };
 
-      await axios.post(res, data);
+      const res = await axios.post(url, data);
 
-      alert("data has added !");
+      alert(res.data.message);
       window.location.href = "login.html";
     } catch (error) {
-      let emailError = error.response?.data?.message;
+      console.error(error);
 
-      alert(emailError);
+      // let emailError = error.response?.data?.message;
+
+      // alert(emailError);
     }
   });
 }

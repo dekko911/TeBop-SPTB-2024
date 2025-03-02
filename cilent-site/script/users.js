@@ -160,14 +160,13 @@ if (user_form) {
         alert("data has added !");
       }
 
+      // and throw some error is kinda like "duplicate data" in this line.
+
       user_form.reset();
       getData();
     } catch (error) {
       // untuk peringatan tidak ada masukan input
       let errors = error.response?.data?.errors;
-      let emailError = error.response?.data?.message;
-
-      alert(emailError);
 
       if (errors) {
         if (errors.name) {

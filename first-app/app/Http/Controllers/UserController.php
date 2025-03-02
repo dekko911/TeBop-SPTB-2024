@@ -24,24 +24,20 @@ class UserController extends Controller
 
     public function store(Request $request)
     {
-        try {
-            $validated = $request->validate([
-                'name' => ['required'],
-                'email' => ['required'],
-                'password' => ['required'],
-            ]);
+        $validated = $request->validate([
+            'name' => ['required'],
+            'email' => ['required'],
+            'password' => ['required'],
+        ]);
 
-            $user = User::create($validated);
+        $user = User::create($validated);
 
-            return response()->json([
-                'user' => $user,
-            ]);
-        } catch (\Exception) {
-            // hanya bisa terlihat di log (actually not), kecuali kalau bisa di tangkap dari method catch yang ada di javascript
-            return response()->json([
-                'message' => 'Email has already exist.',
-            ], 422);
-        }
+        return response()->json([
+            'user' => $user,
+            'message' => 'User created !',
+        ]);
+
+        // if you get the unique error, throw the fucking some error like : y mf show the error there was get a duplicate data in store method.
     }
 
     public function update(Request $request, $id)
