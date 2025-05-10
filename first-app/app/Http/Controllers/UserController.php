@@ -4,16 +4,25 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
 
 class UserController extends Controller
 {
+    protected $search;
+
+    public function __construct()
+    {
+        $this->search = request('search');
+    }
+
     public function index()
     {
         $users = User::oldest()->with(['roles'])->where(function ($i) {
-            $search = request('search');
-
-            if ($search) {
-                return $i->where('name', 'like', "%$search%")->orwhere('email', 'like', "%$search%");
+            if ($this->search) {
+                return $i->where('name', 'like', "%$this->search%")
+                    ->orWhere('email', 'like', "%$this->search%")
+                    ->orWhereRelation('roles', 'name', 'like', "%$this->search%");
             }
         })->get();
 
@@ -24,36 +33,57 @@ class UserController extends Controller
 
     public function store(Request $request)
     {
-        $validated = $request->validate([
+        $request->validate([
             'name' => ['required'],
             'email' => ['required'],
             'password' => ['required'],
+            'profile' => ['nullable', 'file', 'mimes:png,jpg']
         ]);
 
-        $user = User::create($validated);
+        if ($request->file('profile')) {
+            $extension = $request->file('profile')->extension();
+            $filename = Str::random(20) . '.' . $extension;
+
+            $request->file('profile')->storeAs('users/profile', $filename, 'public');
+        }
+
+        $user = User::create([
+            'name' => $request->name,
+            'email' => $request->email,
+            'password' => $request->password,
+            'profile' => $filename ?? null
+        ]);
 
         return response()->json([
             'user' => $user,
             'message' => 'User created !',
         ]);
-
-        // if you get the unique error, throw the fucking some error like : y mf show the error there was get a duplicate data in store method.
     }
 
-    public function update(Request $request, $id)
+    public function update(Request $request, User $user)
     {
-        $user = User::find($id);
-
         $request->validate([
             'name' => ['required'],
             'email' => ['required', 'unique:users,email,' . $user->id],
             'password' => ['required'],
+            'profile' => ['nullable', 'file', 'mimes:png,jpg'],
         ]);
 
-        $user->update([
+        if ($request->file('profile')) {
+            if ($request->old('profile')) {
+                Storage::delete('users/profile/' . $request->old('profile'));
+            }
+            $extension = $request->file('profile')->extension();
+            $filename = Str::random(20) . '.' . $extension;
+
+            $request->file('profile')->storeAs('users/profile', $filename, 'public');
+        }
+
+        $user = User::where('id', $user->id)->update([
             'name' => $request->name,
             'email' => $request->email,
             'password' => $request->password,
+            'profile' => $filename,
         ]);
 
         return response()->json([
@@ -61,9 +91,13 @@ class UserController extends Controller
         ]);
     }
 
-    public function destroy($id)
+    public function destroy(User $user)
     {
-        User::destroy($id);
+        if ($user->profile) {
+            Storage::delete('users/profile/' . $user->profile);
+        }
+
+        User::destroy($user->id);
 
         return response()->json([
             'status' => 'User deleted',

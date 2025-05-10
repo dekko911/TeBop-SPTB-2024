@@ -12,13 +12,6 @@ class ProfileController extends Controller
         $user = Auth::user();
         $roles = $user->roles->pluck('name')->all();
 
-        // if ($roles != "admin") {
-        //     return response()->json([
-        //         'status' => 'forbidden',
-        //         'message' => 'You are not allowed to access this page.'
-        //     ]);
-        // }
-
         return response()->json([
             'status' => 'success',
             'user' => $user,

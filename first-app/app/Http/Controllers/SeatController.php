@@ -13,7 +13,7 @@ class SeatController extends Controller
             $search = request('search');
 
             if ($search) {
-                return $i->where('seat_number', 'like', "%$search%")->orWhere('seat_status', 'like', "%$search%");
+                return $i->where('seat_number', 'like', "%$search%")->orWhere('seat_status', 'like', "%$search%")->orWhereRelation('show', 'showtime', 'like', "%$search%");
             }
         })->get();
 

@@ -13,7 +13,7 @@ class TicketController extends Controller
             $search = request('search');
 
             if ($search) {
-                return $i->where('code_ticket', 'like', "%$search%");
+                return $i->where('code_ticket', 'like', "%$search%")->orWhereRelation('seat', 'seat_number', 'like', "%$search%")->orWhereRelation('user', 'name', 'like', "%$search%")->orWhereRelation('movie', 'title', 'like', "%$search%");
             }
         })->get();
 
@@ -43,7 +43,7 @@ class TicketController extends Controller
     {
         $ticket = Ticket::find($id);
 
-        $request->validate([
+        $validated = $request->validate([
             'seat_id' => ['required'],
             'user_id' => ['required'],
             'movie_id' => ['required'],
@@ -51,13 +51,7 @@ class TicketController extends Controller
             'purchase_date' => ['required'],
         ]);
 
-        $ticket->update([
-            'seat_id' => $request->seat_id,
-            'user_id' => $request->user_id,
-            'movie_id' => $request->movie_id,
-            'code_ticket' => $request->code_ticket,
-            'purchase_date' => $request->purchase_date,
-        ]);
+        $ticket = Ticket::update($validated);
 
         return response()->json([
             'ticket' => $ticket,

@@ -13,7 +13,7 @@ class PaymentController extends Controller
             $search = request('search');
 
             if ($search) {
-                return $i->where('payment_date', 'like', "%$search%");
+                return $i->where('payment_date', 'like', "%$search%")->orWhereRelation('ticket', 'code_ticket', 'like', "%$search%")->orWhereRelation('user', 'name', 'like', "%$search%");
             }
         })->get();
 

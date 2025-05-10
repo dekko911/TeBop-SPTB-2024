@@ -2,12 +2,12 @@ let hasToken = Cookies.get("auth_token");
 let hasAbilities = Cookies.get("abilities");
 
 if (!hasToken) {
-  alert("Oops, Something went wrong");
-  window.location.href = "/login.html";
+	alert("Oops, Something went wrong");
+	window.location.href = "/login.html";
 }
 
 let headers = {
-  Authorization: `Bearer ${hasToken}`,
+	Authorization: `Bearer ${hasToken}`,
 };
 
 let current_user = document.getElementById("current_user");
@@ -16,53 +16,53 @@ current_user.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" height="14" wi
 
 //get data
 async function getAllData() {
-  const res_users = await axios.get("http://127.0.0.1:8000/api/admin/users", {
-    headers,
-  });
-  const res_movies = await axios.get(
-    "http://127.0.0.1:8000/api/admin/t_movies",
-    {
-      headers,
-    }
-  );
-  const res_studios = await axios.get(
-    "http://127.0.0.1:8000/api/admin/t_studios",
-    {
-      headers,
-    }
-  );
+	const res_users = await axios.get("http://127.0.0.1:8000/api/admin/users", {
+		headers,
+	});
+	const res_movies = await axios.get(
+		"http://127.0.0.1:8000/api/admin/t_movies",
+		{
+			headers,
+		}
+	);
+	const res_studios = await axios.get(
+		"http://127.0.0.1:8000/api/admin/t_studios",
+		{
+			headers,
+		}
+	);
 
-  // const res_roles = await axios.get("http://127.0.0.1:8000/api/admin/roles", {
-  //   headers,
-  // });
+	// const res_roles = await axios.get("http://127.0.0.1:8000/api/admin/roles", {
+	//   headers,
+	// });
 
-  let users = res_users.data.users;
-  let movies = res_movies.data.movies;
-  let studios = res_studios.data.studios;
-  // let roles = res_roles.data.roles;
+	let users = res_users.data.users;
+	let movies = res_movies.data.movies;
+	let studios = res_studios.data.studios;
+	// let roles = res_roles.data.roles;
 
-  let count_users = document.getElementById("user-count");
-  let count_movies = document.getElementById("movie-count");
-  let count_studios = document.getElementById("studio-count");
-  // let count_roles = document.getElementById("role-count");
+	let count_users = document.getElementById("user-count");
+	let count_movies = document.getElementById("movie-count");
+	let count_studios = document.getElementById("studio-count");
+	// let count_roles = document.getElementById("role-count");
 
-  if (count_users) {
-    count_users.innerHTML = `<h5 class="text-white font-weight-bolder mb-0 mt-3">${users.length}</h5>`;
-  }
+	if (count_users) {
+		count_users.innerHTML = `<h5 class="text-white font-weight-bolder mb-0 mt-3">${users.length}</h5>`;
+	}
 
-  if (count_movies) {
-    count_movies.innerHTML = `<h5 class="text-white font-weight-bolder mb-0 mt-3">${movies.length}</h5>`;
-  }
+	if (count_movies) {
+		count_movies.innerHTML = `<h5 class="text-white font-weight-bolder mb-0 mt-3">${movies.length}</h5>`;
+	}
 
-  if (count_studios) {
-    count_studios.innerHTML = `<h5 class="text-white font-weight-bolder mb-0 mt-3">${studios.length}</h5>`;
-  }
+	if (count_studios) {
+		count_studios.innerHTML = `<h5 class="text-white font-weight-bolder mb-0 mt-3">${studios.length}</h5>`;
+	}
 
-  // if (count_roles) {
-  //   count_roles.innerHTML = `<h5 class="text-white font-weight-bolder mb-0 mt-3">${roles?.filter(
-  //     length
-  //   )}</h5>`;
-  // }
+	// if (count_roles) {
+	//   count_roles.innerHTML = `<h5 class="text-white font-weight-bolder mb-0 mt-3">${roles?.filter(
+	//     length
+	//   )}</h5>`;
+	// }
 }
 
 getAllData();
@@ -72,14 +72,15 @@ getAllData();
 let logout = document.getElementById("logout");
 
 if (logout) {
-  logout.addEventListener("click", function () {
-    Cookies.remove("auth_token");
-    Cookies.remove("abilities");
-    Cookies.remove("name");
-    Cookies.remove("email");
+	logout.addEventListener("click", function () {
+		Cookies.remove("name");
+		Cookies.remove("email");
+		Cookies.remove("auth_token");
+		Cookies.remove("abilities");
+		Cookies.remove("profile");
 
-    alert("Success Logout !");
+		alert("Success Logout !");
 
-    window.location.href = "/login.html";
-  });
+		window.location.href = "/login.html";
+	});
 }

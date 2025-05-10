@@ -13,7 +13,7 @@ class RoleController extends Controller
             $search = request('search');
 
             if ($search) {
-                return $i->where('name', 'like', "%$search%");
+                return $i->where('name', 'like', "%$search%")->orWhereRelation('user', 'name', 'like', "%$search%");
             }
         })->get();
 

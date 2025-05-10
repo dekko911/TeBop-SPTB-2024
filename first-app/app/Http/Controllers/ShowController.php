@@ -13,7 +13,7 @@ class ShowController extends Controller
             $search = request('search');
 
             if ($search) {
-                return $i->where('movie_id', 'like', "%$search%")->orWhere('studio_id', 'like', "%$search%");
+                return $i->where('showtime', 'like', "%$search%")->orWhereRelation('studio', 'studio', 'like', "%$search%")->orWhereRelation('movie', 'title', 'like', "%$search%");
             }
         })->get();
 

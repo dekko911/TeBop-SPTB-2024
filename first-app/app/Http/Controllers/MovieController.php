@@ -13,7 +13,7 @@ class MovieController extends Controller
             $search = request('search');
 
             if ($search) {
-                return $i->where('title', 'like', "%$search%")->orWhere('genre_id', 'like', "%$search%");
+                return $i->where('title', 'like', "%$search%")->orWhereRelation('genre', 'genre', 'like', "%$search%")->orWhere('release_date', 'like', "%$search%");
             }
         })->get();
 
