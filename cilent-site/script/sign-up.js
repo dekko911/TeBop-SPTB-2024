@@ -6,22 +6,8 @@ if (user_form) {
 	user_form.addEventListener("submit", async (e) => {
 		e.preventDefault();
 
-		// let name = document.querySelector("#name").value;
-		// let email = document.querySelector("#email").value;
-		// let password = document.querySelector("#password").value;
-		// let profile = document.querySelector("#profile").files[0];
-
 		try {
 			const formData = new FormData(user_form);
-
-			// const data = {
-			// 	name,
-			// 	email,
-			// 	password,
-			// 	profile: profile.name,
-			// };
-
-			//console.log(formData);
 
 			const res = await axios.post(url, formData);
 

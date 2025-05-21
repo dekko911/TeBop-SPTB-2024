@@ -24,23 +24,17 @@ class SeatController extends Controller
 
     public function store(Request $request)
     {
-        try {
-            $validated = $request->validate([
-                'show_id' => ['required'],
-                'seat_number' => ['required'],
-                'seat_status' => ['required'],
-            ]);
+        $validated = $request->validate([
+            'show_id' => ['required'],
+            'seat_number' => ['required'],
+            'seat_status' => ['required'],
+        ]);
 
-            $seat = Seat::create($validated);
+        $seat = Seat::create($validated);
 
-            return response()->json([
-                'seat' => $seat,
-            ]);
-        } catch (\Exception $e) {
-            // return response()->json([
-            //     'message' => 'Data has already exist.'
-            // ], 422);
-        }
+        return response()->json([
+            'seat' => $seat,
+        ]);
     }
 
     public function update(Request $request, $id)

@@ -19,12 +19,14 @@ async function getAllData() {
   const res_users = await axios.get("http://127.0.0.1:8000/api/user/users", {
     headers,
   });
+
   const res_movies = await axios.get(
     "http://127.0.0.1:8000/api/user/t_movies",
     {
       headers,
     }
   );
+  
   const res_studios = await axios.get(
     "http://127.0.0.1:8000/api/user/t_studios",
     {

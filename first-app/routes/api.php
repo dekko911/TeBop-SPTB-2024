@@ -36,7 +36,7 @@ Route::middleware(['auth:sanctum', 'ability:admin'])->group(function () {
 });
 
 // untuk route user
-Route::middleware(['auth:sanctum', 'ability:user,writer,editor'])->group(function () {
+Route::middleware(['auth:sanctum', 'ability:user,writer,editor,creator'])->group(function () {
     // Route::get('/user/profile', [UserController::class, 'show']);
     Route::apiResource('/user/t_studios', StudioController::class);
     Route::apiResource('/user/users', UserController::class);

@@ -128,6 +128,7 @@ async function loadUsers(selectedUsers = []) {
 
 	if (dropdown) {
 		dropdown.innerHTML = users
+			.filter((user) => user.id !== 1)
 			.map((user) => {
 				const isSelected = selectedUsers.includes(user.id) ? "selected" : "";
 				return `<option value="${user.id}" ${isSelected}>${user.name}</option>`;

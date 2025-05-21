@@ -97,9 +97,10 @@ if (genre_form) {
 			alert("data has added !");
 
 			genre_form.reset();
-
 			getData();
 		} catch (error) {
+			//console.error(error);
+
 			let errors = error.response?.data?.errors;
 
 			if (errors) {

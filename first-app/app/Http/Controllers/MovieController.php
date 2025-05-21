@@ -24,24 +24,18 @@ class MovieController extends Controller
 
     public function store(Request $request)
     {
-        try {
-            $validated = $request->validate([
-                'title' => ['required'],
-                'genre_id' => ['required'],
-                'duration' => ['required'],
-                'release_date' => ['required'],
-            ]);
+        $validated = $request->validate([
+            'title' => ['required'],
+            'genre_id' => ['required'],
+            'duration' => ['required'],
+            'release_date' => ['required'],
+        ]);
 
-            $movie = Movie::create($validated);
+        $movie = Movie::create($validated);
 
-            return response()->json([
-                'movie' => $movie,
-            ]);
-        } catch (\Exception $e) {
-            // return response()->json([
-            //     'message' => 'Data has already exist.'
-            // ], 422);
-        }
+        return response()->json([
+            'movie' => $movie,
+        ]);
     }
 
     public function update(Request $request, $id)

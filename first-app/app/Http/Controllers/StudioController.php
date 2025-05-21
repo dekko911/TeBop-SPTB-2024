@@ -24,21 +24,15 @@ class StudioController extends Controller
 
     public function store(Request $request)
     {
-        try {
-            $validated = $request->validate([
-                'studio' => ['required'],
-            ]);
+        $validated = $request->validate([
+            'studio' => ['required'],
+        ]);
 
-            $studio = Studio::create($validated);
+        $studio = Studio::create($validated);
 
-            return response()->json([
-                'studio' => $studio,
-            ]);
-        } catch (\Exception $e) {
-            // return response()->json([
-            //     'message' => 'Data has already exist.'
-            // ], 422);
-        }
+        return response()->json([
+            'studio' => $studio,
+        ]);
     }
 
     public function destroy($id)

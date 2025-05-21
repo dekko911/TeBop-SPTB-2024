@@ -105,12 +105,10 @@ async function loadSeats(selectedSeats = []) {
 	let dropdown = document.getElementById("input_seat");
 
 	if (dropdown) {
-		dropdown.innerHTML = seats
-			.map((seat) => {
-				const isSelected = selectedSeats.includes(seat.id) ? "selected" : "";
-				return `<option value="${seat.id}" ${isSelected}>${seat.seat_number}</option>`;
-			})
-			.join("");
+		dropdown.innerHTML = seats.map((seat) => {
+			const isSelected = selectedSeats.includes(seat.id) ? "selected" : "";
+			return `<option value="${seat.id}" ${isSelected}>${seat.seat_number}</option>`;
+		});
 	}
 }
 
@@ -122,15 +120,16 @@ async function loadUsers(selectedUsers = []) {
 		headers,
 	});
 	let users = url.data.users;
+
 	let dropdown = document.getElementById("input_user");
 
 	if (dropdown) {
 		dropdown.innerHTML = users
+			.filter((user) => user.id !== 1)
 			.map((user) => {
 				const isSelected = selectedUsers.includes(user.id) ? "selected" : "";
 				return `<option value="${user.id}" ${isSelected}>${user.name}</option>`;
-			})
-			.join("");
+			});
 	}
 }
 

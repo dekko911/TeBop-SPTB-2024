@@ -54,40 +54,53 @@ class UserController extends Controller
             'profile' => $filename ?? null
         ]);
 
+        if ($user['name'] === 'admin') {
+            throw new \Exception("Admin Can't Created !", 422);
+        }
+
         return response()->json([
             'user' => $user,
             'message' => 'User created !',
         ]);
     }
 
-    public function update(Request $request, User $user)
+    public function update(Request $request, $id)
     {
-        $request->validate([
-            'name' => ['required'],
-            'email' => ['required', 'unique:users,email,' . $user->id],
-            'password' => ['required'],
-            'profile' => ['nullable', 'file', 'mimes:png,jpg'],
-        ]);
+        $user = User::find($id);
 
-        if ($request->file('profile')) {
-            if ($request->old('profile')) {
-                Storage::delete('users/profile/' . $request->old('profile'));
-            }
-            $extension = $request->file('profile')->extension();
-            $filename = Str::random(20) . '.' . $extension;
-
-            $request->file('profile')->storeAs('users/profile', $filename, 'public');
+        if ($user['id'] === 1) {
+            return response()->json([
+                'status' => 'error',
+            ]);
         }
 
-        $user = User::where('id', $user->id)->update([
+        $request->validate([
+            'name' => ['required'],
+            'email' => ['required'],
+        ]);
+
+        // if ($request->file('profile')) {
+        //     if ($request->old('profile')) {
+        //         Storage::delete('users/profile/' . $request->old('profile'));
+        //     }
+        //     $extension = $request->file('profile')->extension();
+        //     $filename = Str::random(20) . '.' . $extension;
+
+        //     $request->file('profile')->storeAs('users/profile', $filename, 'public');
+        // }
+
+        $user->update([
             'name' => $request->name,
             'email' => $request->email,
-            'password' => $request->password,
-            'profile' => $filename,
         ]);
+
+        if ($request->password) {
+            $user->update(['password' => $request->password]);
+        }
 
         return response()->json([
             'user' => $user,
+            'status' => 'success'
         ]);
     }
 
@@ -95,6 +108,12 @@ class UserController extends Controller
     {
         if ($user->profile) {
             Storage::delete('users/profile/' . $user->profile);
+        }
+
+        if ($user['id'] === 1) {
+            return response()->json([
+                'status' => 'forbidden',
+            ]);
         }
 
         User::destroy($user->id);

@@ -24,28 +24,22 @@ class RoleController extends Controller
 
     public function store(Request $request)
     {
-        try {
-            $validated = $request->validate([
-                'user_id' => ['required'],
-                'name' => ['required'],
-            ]);
+        $validated = $request->validate([
+            'user_id' => ['required'],
+            'name' => ['required'],
+        ]);
 
-            if ($validated['name'] == 'admin') {
-                return response()->json([
-                    'message' => 'Nama Role Tidak Boleh Bernama Admin.',
-                ], 422);
-            }
-
-            $role = Role::create($validated);
-
+        if ($validated['name'] == 'admin' && $validated['user_id'] == 1) {
             return response()->json([
-                'role' => $role
-            ]);
-        } catch (\Exception $e) {
-            // return response()->json([
-            //     'message' => 'Data has already exist.'
-            // ], 422);
+                'message' => 'Nama Role Tidak Boleh Bernama Admin.',
+            ], 422);
         }
+
+        $role = Role::create($validated);
+
+        return response()->json([
+            'role' => $role
+        ]);
     }
 
     public function destroy($id)

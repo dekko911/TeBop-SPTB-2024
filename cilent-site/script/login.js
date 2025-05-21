@@ -62,7 +62,7 @@ if (formLogin) {
 				}
 			}
 		} catch (error) {
-			console.error(error);
+			//console.error(error);
 		}
 	});
 }

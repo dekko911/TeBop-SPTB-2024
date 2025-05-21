@@ -62,13 +62,12 @@ async function getData() {
 							.join("")}</td>
 			<td class="align-middle text-sm"><img src="http://127.0.0.1:8000/storage/users/profile/${
 				user.profile
-			}" alt="profile" style="width: 138px; border-radius: 60px;"></td>
+			}" alt="profile" style="width: 85px; border-radius: 5px;"></td>
             <td class="ps-4">
               <button type="button" class="btn btn-sm btn-warning my-auto"
                 onclick="update(${user.id}, 
                 '${user.name}', 
-                '${user.email}',
-                '${user.profile}')">
+                '${user.email}')">
                 Edit
               </button>
               <button type="button" class="btn btn-sm btn-danger my-auto" onclick="delete_user(${
@@ -79,34 +78,6 @@ async function getData() {
             </td>
           </tr>
         `;
-
-				if (user?.name == "admin") {
-					elementForTbody = `
-          <tr class="text-center">
-            <td class="align-middle text-sm">${key + 1}</td>
-            <td class="align-middle text-sm">${user.name}</td>
-            <td class="align-middle text-sm">${user.email}</td>
-            <td class="align-middle text-sm">${user?.roles
-							?.map((role) => {
-								return `<div>
-								${role.name}
-								</div>`;
-							})
-							.join("")}</td>
-			<td class="align-middle text-sm"><img src="http://127.0.0.1:8000/storage/users/profile/${
-				user.profile
-			}" alt="profile" style="width: 138px; border-radius: 60px;"></td>
-            <td class="ps-4">
-              <button type="button" class="btn btn-sm btn-secondary my-auto" disabled>
-                Edit
-              </button>
-              <button type="button" class="btn btn-sm btn-secondary my-auto" disabled>
-                Delete
-              </button>
-            </td>
-          </tr>
-        `;
-				}
 			});
 
 			data_users_entry.innerHTML = elementForTbody;
@@ -133,10 +104,10 @@ if (user_form) {
 		e.preventDefault();
 
 		let id = document.querySelector("#input_id").value;
-		// let name = document.querySelector("#input_name").value;
-		// let email = document.querySelector("#input_email").value;
-		// let password = document.querySelector("#input_password").value;
-		// let profile = document.querySelector("#input_profile").files[0];
+		let name = document.querySelector("#input_name").value;
+		let email = document.querySelector("#input_email").value;
+		let password = document.querySelector("#input_password").value;
+		let profile = document.querySelector("#input_profile").files[0];
 
 		let name_error = document.querySelector("#name_error");
 		name_error.innerHTML = " ";
@@ -144,23 +115,34 @@ if (user_form) {
 		email_error.innerHTML = " ";
 		let password_error = document.querySelector("#password_error");
 		password_error.innerHTML = " ";
+		let profile_error = document.querySelector("#profile_error");
+		profile_error.innerHTML = " ";
 
 		try {
-			const formData = new FormData(user_form);
+			const formData = new FormData();
 
-			// if (
-			// 	formData.name &&
-			// 	formData.email &&
-			// 	formData.password &&
-			// 	formData.profile
-			// ) {
-			// 	// sebagai perantara untuk append formdata ini, ini sebagai contoh saja.
-			// }
+			if (
+				user_form.name &&
+				user_form.email &&
+				user_form.password &&
+				user_form.profile
+			) {
+				formData.append("name", name);
+				formData.append("email", email);
+				formData.append("password", password);
+				formData.append("profile", profile);
+			}
+
+			const userData = {};
+
+			formData.forEach((value, key) => {
+				userData[key] = value;
+			});
 
 			if (id) {
-				await axios.patch(
+				const res = await axios.patch(
 					"http://127.0.0.1:8000/api/admin/users/" + id,
-					formData,
+					userData,
 					{
 						headers,
 					}
@@ -168,7 +150,13 @@ if (user_form) {
 
 				document.querySelector("#input_id").value = "";
 
-				alert("data has changed !");
+				if (res.data.status && res.data.status == "success") {
+					alert("data has changed !");
+				}
+
+				if (res.data.status && res.data.status == "error") {
+					alert("User Admin Can't Edit !");
+				}
 			} else {
 				await axios.post("http://127.0.0.1:8000/api/admin/users", formData, {
 					headers,
@@ -182,9 +170,9 @@ if (user_form) {
 			user_form.reset();
 			getData();
 		} catch (error) {
-			// untuk peringatan tidak ada masukan input
-			console.error(error);
+			// console.error(error);
 
+			// untuk peringatan tidak ada masukan input
 			let errors = error.response?.data?.errors;
 
 			if (errors) {
@@ -199,20 +187,22 @@ if (user_form) {
 				if (errors.password) {
 					password_error.innerHTML = errors.password;
 				}
+
+				if (errors.profile) {
+					profile_error.innerHTML = errors.profile;
+				}
 			}
 		}
 	});
 }
 
 // update data users
-async function update(id, name, email, profile) {
+async function update(id, name, email) {
 	let input_name = document.querySelector("#input_name");
 	let input_email = document.querySelector("#input_email");
-	let input_profile = document.querySelector("#input_profile");
 
 	input_name.value = name;
 	input_email.value = email;
-	input_profile.files[0] = profile;
 
 	document.querySelector("#input_id").value = id;
 }
@@ -224,10 +214,21 @@ async function delete_user(id) {
 	}
 
 	try {
-		await axios.delete("http://127.0.0.1:8000/api/admin/users/" + id, {
-			headers,
-		});
-		alert("data has deleted !");
+		const res = await axios.delete(
+			"http://127.0.0.1:8000/api/admin/users/" + id,
+			{
+				headers,
+			}
+		);
+
+		if (res.data.status && res.data.status == "User deleted") {
+			alert("data has deleted !");
+		}
+
+		if (res.data.status && res.data.status == "forbidden") {
+			alert("Can't Delete Admin User !");
+		}
+
 		getData();
 	} catch (error) {
 		console.log(error);
