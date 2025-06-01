@@ -1,6 +1,6 @@
 # TeBop-SPTB-2024
 
-**TeBop-SPTB-2024** adalah proyek pengembangan aplikasi web yang bertujuan untuk menyediakan platform pembelajaran interaktif bagi siswa SMA. Proyek ini dibangun menggunakan teknologi web modern untuk memastikan performa dan skalabilitas yang optimal.
+**TeBop-SPTB-2024** adalah proyek pengembangan aplikasi web yang bertujuan untuk menyediakan platform pembelajaran interaktif bagi pengguna yang ingin memesan tiket secra cepat. Proyek ini dibangun menggunakan teknologi web modern untuk memastikan performa dan skalabilitas yang optimal.
 
 ## Fitur Utama
 
@@ -28,22 +28,26 @@ TeBop-SPTB-2024/
 ## Instalasi
 
 1. **Klon repositori**
+
    ```bash
    git clone https://github.com/dekko911/TeBop-SPTB-2024.git
    ```
 
 2. **Masuk ke direktori proyek**
+
    ```bash
    cd TeBop-SPTB-2024
    ```
 
 3. **Instal dependensi**
+
    ```bash
    npm install
    composer install
    ```
 
 4. **Konfigurasi lingkungan**
+
    - Salin file `.env.example` menjadi `.env`
    - Sesuaikan konfigurasi database dan lainnya sesuai kebutuhan
 
@@ -71,6 +75,5 @@ Proyek ini dilisensikan di bawah [MIT License](LICENSE).
 
 Untuk pertanyaan atau saran, silakan hubungi:
 
-- **Nama**: (Nama Anda)
-- **Email**: (email@example.com)
+- **Nama**: (Miko Suyasa)
 - **GitHub**: [https://github.com/dekko911](https://github.com/dekko911)
