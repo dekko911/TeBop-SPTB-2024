@@ -47,7 +47,7 @@ class SeatController extends Controller
             'seat_status' => ['required'],
         ]);
 
-        $seat->update([
+        $seat = Seat::update([
             'show_id' => $request->show_id,
             'seat_number' => $request->seat_number,
             'seat_status' => $request->seat_status,

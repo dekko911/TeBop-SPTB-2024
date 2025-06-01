@@ -31,20 +31,26 @@ async function getAllData() {
 			headers,
 		}
 	);
+	const res_roles = await axios.get("http://127.0.0.1:8000/api/admin/roles", {
+		headers,
+	});
 
-	// const res_roles = await axios.get("http://127.0.0.1:8000/api/admin/roles", {
-	//   headers,
-	// });
+	const users = res_users.data.users;
+	const movies = res_movies.data.movies;
+	const studios = res_studios.data.studios;
+	const roles = res_roles.data.roles;
 
-	let users = res_users.data.users;
-	let movies = res_movies.data.movies;
-	let studios = res_studios.data.studios;
-	// let roles = res_roles.data.roles;
+	function filterDuplicates(array) {
+		return array.filter(
+			(role, index, array) =>
+				index === array.findIndex((item) => item.name === role.name)
+		);
+	}
 
 	let count_users = document.getElementById("user-count");
 	let count_movies = document.getElementById("movie-count");
 	let count_studios = document.getElementById("studio-count");
-	// let count_roles = document.getElementById("role-count");
+	let count_roles = document.getElementById("role-count");
 
 	if (count_users) {
 		count_users.innerHTML = `<h5 class="text-white font-weight-bolder mb-0 mt-3">${users.length}</h5>`;
@@ -58,11 +64,11 @@ async function getAllData() {
 		count_studios.innerHTML = `<h5 class="text-white font-weight-bolder mb-0 mt-3">${studios.length}</h5>`;
 	}
 
-	// if (count_roles) {
-	//   count_roles.innerHTML = `<h5 class="text-white font-weight-bolder mb-0 mt-3">${roles?.filter(
-	//     length
-	//   )}</h5>`;
-	// }
+	if (count_roles) {
+		count_roles.innerHTML = `<h5 class="text-white font-weight-bolder mb-0 mt-3">${
+			filterDuplicates(roles).length
+		}</h5>`;
+	}
 }
 
 getAllData();

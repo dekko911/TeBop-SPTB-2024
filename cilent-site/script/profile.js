@@ -9,10 +9,6 @@ if (!hasToken) {
 	window.location.href = "/login.html";
 }
 
-let headers = {
-	Authorization: `Bearer ${hasToken}`,
-};
-
 let currentName = document.getElementById("current_name");
 let currentEmail = document.getElementById("current_email");
 let currentUser = document.getElementById("current_user");

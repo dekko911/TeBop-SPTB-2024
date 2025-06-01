@@ -102,7 +102,15 @@ async function loadSeats(selectedSeats = []) {
 		headers,
 	});
 	let seats = url.data.seats;
+
 	let dropdown = document.getElementById("input_seat");
+	let input_status = document.getElementById("status_seat");
+
+	if (seats.seat_status == "Available") {
+		seats.seat_status = input_status;
+
+		//
+	}
 
 	if (dropdown) {
 		dropdown.innerHTML = seats.map((seat) => {
@@ -119,17 +127,15 @@ async function loadUsers(selectedUsers = []) {
 	const url = await axios.get("http://127.0.0.1:8000/api/admin/users", {
 		headers,
 	});
-	let users = url.data.users;
+	let users = url.data.users.filter((user) => user.id !== 1);
 
 	let dropdown = document.getElementById("input_user");
 
 	if (dropdown) {
-		dropdown.innerHTML = users
-			.filter((user) => user.id !== 1)
-			.map((user) => {
-				const isSelected = selectedUsers.includes(user.id) ? "selected" : "";
-				return `<option value="${user.id}" ${isSelected}>${user.name}</option>`;
-			});
+		dropdown.innerHTML = users.map((user) => {
+			const isSelected = selectedUsers.includes(user.id) ? "selected" : "";
+			return `<option value="${user.id}" ${isSelected}>${user.name}</option>`;
+		});
 	}
 }
 
@@ -188,6 +194,8 @@ if (ticket_form) {
 				code_ticket,
 				purchase_date,
 			};
+
+			console.log(data);
 
 			if (id) {
 				await axios.patch(

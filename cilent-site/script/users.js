@@ -36,13 +36,13 @@ async function getData() {
 		let users = data.users;
 
 		if (users.length > 0) {
-			// jika ada data, lakukan loading data
+			// jika ada data masih di request, lakukan loading
 
 			// let loading = document.getElementById("loading");
 			// if (loading) {
-			//   loading.style.display = "none";
+			// 	loading.style.display = "none";
 			// } else {
-			//   loading.style.display = "block";
+			// 	loading.style.display = "block";
 			// }
 
 			let elementForTbody = "";

@@ -21,7 +21,8 @@ if (formLogin) {
 		let password = document.querySelector("#password").value;
 
 		try {
-			let url = "http://127.0.0.1:8000/api/login";
+			const url = "http://127.0.0.1:8000/api/login";
+
 			const res = await axios.post(url, { email, password });
 			//console.log(res.data);
 
