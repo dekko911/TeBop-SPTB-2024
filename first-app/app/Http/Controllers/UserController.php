@@ -20,8 +20,7 @@ class UserController extends Controller
     {
         $users = User::oldest()->with(['roles'])->where(function ($i) {
             if ($this->search) {
-                return $i->where('name', 'like', "%$this->search%")
-                    ->orWhere('email', 'like', "%$this->search%")
+                return $i->whereAny(['name', 'email'], 'like', "%$this->search%")
                     ->orWhereRelation('roles', 'name', 'like', "%$this->search%");
             }
         })->get();
@@ -37,7 +36,7 @@ class UserController extends Controller
             'name' => ['required'],
             'email' => ['required'],
             'password' => ['required'],
-            'profile' => ['nullable', 'file', 'mimes:png,jpg']
+            'profile' => ['nullable', 'mimes:png,jpg,webp,gif', 'max:1024'],
         ]);
 
         if ($request->file('profile')) {
@@ -51,12 +50,8 @@ class UserController extends Controller
             'name' => $request->name,
             'email' => $request->email,
             'password' => $request->password,
-            'profile' => $filename ?? null
+            'profile' => $filename ?? '-',
         ]);
-
-        if ($user['name'] === 'admin') {
-            throw new \Exception("Admin Can't Created !", 422);
-        }
 
         return response()->json([
             'user' => $user,
@@ -68,26 +63,26 @@ class UserController extends Controller
     {
         $user = User::find($id);
 
-        if ($user['id'] === 1) {
-            return response()->json([
-                'status' => 'error',
-            ]);
-        }
-
         $request->validate([
             'name' => ['required'],
             'email' => ['required'],
+            'profile' => ['mimes:png,jpg,webp,gif', 'max:1024'],
         ]);
 
-        // if ($request->file('profile')) {
-        //     if ($request->old('profile')) {
-        //         Storage::delete('users/profile/' . $request->old('profile'));
-        //     }
-        //     $extension = $request->file('profile')->extension();
-        //     $filename = Str::random(20) . '.' . $extension;
+        if ($user->id === 1) {
+            throw new \Exception('LO GA BOLEH DI EDIT');
+        }
 
-        //     $request->file('profile')->storeAs('users/profile', $filename, 'public');
-        // }
+        if ($request->file('profile')) {
+            if ($user->profile) {
+                Storage::disk('public')->delete("users/profile/$user->profile");
+            }
+
+            $extension = $request->file('profile')->extension();
+            $filename = Str::random(20) . '.' . $extension;
+
+            $request->file('profile')->storeAs('users/profile', $filename, 'public');
+        }
 
         $user->update([
             'name' => $request->name,
@@ -96,6 +91,10 @@ class UserController extends Controller
 
         if ($request->password) {
             $user->update(['password' => $request->password]);
+        }
+
+        if ($request->profile) {
+            $user->update(['profile' => $filename]);
         }
 
         return response()->json([
@@ -107,13 +106,11 @@ class UserController extends Controller
     public function destroy(User $user)
     {
         if ($user->profile) {
-            Storage::delete('users/profile/' . $user->profile);
+            Storage::disk('public')->delete("users/profile/$user->profile");
         }
 
         if ($user['id'] === 1) {
-            return response()->json([
-                'status' => 'forbidden',
-            ]);
+            throw new \Exception('LO GA BOLEH KE HAPUS');
         }
 
         User::destroy($user->id);

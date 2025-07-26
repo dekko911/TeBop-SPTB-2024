@@ -463,6 +463,7 @@
 							<h3 class="text-center">Users Form</h3>
 							<form id="user-form" method="post" enctype="multipart/form-data">
 								<input type="hidden" id="input_id" />
+								<input type="hidden" name="_method" value="PATCH" />
 								<div class="mb-3">
 									<label for="">Name</label>
 									<input
@@ -494,12 +495,18 @@
 									<span id="password_error" class="text-danger fs-6"></span>
 								</div>
 								<div class="mb-3">
-									<label for="">Profile</label>
+									<label for="input_profile">Profile</label>
+									<img
+										class="w-30 mb-3 rounded"
+										style="display: none"
+										id="img-preview"
+									/>
 									<input
 										type="file"
 										class="form-control"
 										name="profile"
 										id="input_profile"
+										onchange="previewImage()"
 									/>
 									<span id="profile_error" class="text-danger fs-6"></span>
 								</div>

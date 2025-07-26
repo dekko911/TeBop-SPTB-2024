@@ -1,6 +1,7 @@
 let hasToken = Cookies.get("auth_token");
+let hasAbilities = Cookies.get("abilities");
 
-if (!hasToken) {
+if (!hasToken || !hasAbilities) {
 	alert("Oops, Something went wrong");
 	window.location.href = "/login.html";
 }
@@ -40,30 +41,30 @@ async function getData() {
 
 			roles.forEach((role, key) => {
 				elementForTbody += `
-            <tr class="text-center">
-                <td class="align-middle text-sm">${key + 1}</td>
-                <td class="align-middle text-sm">${role?.user?.name}</td>
-                <td class="align-middle text-sm">${role.name}</td>
-                <td class="ps-2">
-                    <button type="button" class="btn btn-sm btn-danger my-auto" onclick="delete_role(${
-											role.id
-										})">Delete</button>
-                </td>
-            </tr>
-        `;
+				<tr class="text-center">
+					<td class="align-middle text-sm">${key + 1}</td>
+					<td class="align-middle text-sm">${role?.user?.name}</td>
+					<td class="align-middle text-sm">${role.name}</td>
+					<td class="ps-2">
+						<button type="button" class="btn btn-sm btn-danger my-auto" onclick="delete_role(${
+							role.id
+						})">Delete</button>
+					</td>
+				</tr>
+			`;
 
 				if (role.name == "admin") {
 					elementForTbody = `
-            <tr class="text-center">
-                <td class="align-middle text-sm">${key + 1}</td>
-                <td class="align-middle text-sm">${role?.user?.name}</td>
-                <td class="align-middle text-sm">${role.name}</td>
-                <td class="ps-2">
-                    <button type="button" class="btn btn-sm btn-secondary my-auto" disabled>Delete
-                    </button>
-                </td>
-            </tr>
-        `;
+				<tr class="text-center">
+					<td class="align-middle text-sm">${key + 1}</td>
+					<td class="align-middle text-sm">${role?.user?.name}</td>
+					<td class="align-middle text-sm">${role.name}</td>
+					<td class="ps-2">
+						<button type="button" class="btn btn-sm btn-secondary my-auto" disabled>Delete
+						</button>
+					</td>
+				</tr>
+			`;
 				}
 			});
 

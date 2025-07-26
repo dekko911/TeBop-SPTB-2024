@@ -10,14 +10,14 @@ class ProfileController extends Controller
     public function show()
     {
         $user = Auth::user();
-        $roles = $user->roles->pluck('name')->all();
+        $token = Auth::authenticate()->accessToken;
 
         return response()->json([
             'status' => 'success',
             'user' => $user,
-            'abilities' => $roles
+            'accessToken' => $token,
         ]);
 
-        // this thing likes a backup, if you use it, sometimes it will work, maybe.
+        // this thing like a backup, if you use it, sometimes it will work, maybe.
     }
 }

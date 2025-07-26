@@ -4,7 +4,7 @@ let hasName = Cookies.get("name");
 let hasEmail = Cookies.get("email");
 let hasProfile = Cookies.get("profile");
 
-if (!hasToken) {
+if (!hasToken || !hasAbilities) {
 	alert("Oops, Something went wrong");
 	window.location.href = "/login.html";
 }
@@ -19,12 +19,11 @@ currentEmail.innerHTML = `${hasEmail}`;
 currentUser.innerHTML = `${hasAbilities}`;
 images.forEach((image) => {
 	image.src = `${
-		hasProfile
+		hasProfile !== "-"
 			? `http://127.0.0.1:8000/storage/users/profile/${hasProfile}`
 			: "/assets/img/pngegg.png"
 	}`;
 });
-//console.log(hasProfile);
 
 // logout
 

@@ -12,7 +12,7 @@ return new class extends Migration {
     {
         Schema::create('seats', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('show_id')->constrained(table: 'shows')->onDelete('cascade');
+            $table->foreignId('show_id')->constrained(table: 'shows')->onDelete('cascade')->onUpdate('cascade');
             $table->string('seat_number', 100)->unique();
             $table->enum('seat_status', ['Available', 'Not Available']);
             $table->timestamps();

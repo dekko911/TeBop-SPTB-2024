@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Payment;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class PaymentController extends Controller
 {
@@ -13,7 +14,7 @@ class PaymentController extends Controller
             $search = request('search');
 
             if ($search) {
-                return $i->where('payment_date', 'like', "%$search%")->orWhereRelation('ticket', 'code_ticket', 'like', "%$search%")->orWhereRelation('user', 'name', 'like', "%$search%");
+                return $i->whereAny(['payment_date', 'price', 'status'], 'like', "%$search%")->orWhereRelation('ticket', 'code_ticket', 'like', "%$search%")->orWhereRelation('user', 'name', 'like', "%$search%");
             }
         })->get();
 
@@ -24,15 +25,30 @@ class PaymentController extends Controller
 
     public function store(Request $request)
     {
-        $validated = $request->validate([
+        $request->validate([
             'ticket_id' => ['required'],
-            'user_id' => ['required'],
             'payment_date' => ['required'],
             'price' => ['required'],
             'status' => ['required'],
         ]);
 
-        $payment = Payment::create($validated);
+        if (Auth::user()->id === 1) {
+            $payment = Payment::create([
+                'ticket_id' => $request->ticket_id,
+                'user_id' => $request->user_id,
+                'payment_date' => $request->payment_date,
+                'price' => $request->price,
+                'status' => $request->status,
+            ]);
+        } else {
+            $payment = Payment::create([
+                'ticket_id' => $request->ticket_id,
+                'user_id' => Auth::id(),
+                'payment_date' => $request->payment_date,
+                'price' => $request->price,
+                'status' => $request->status,
+            ]);
+        }
 
         return response()->json([
             'payment' => $payment
@@ -43,7 +59,7 @@ class PaymentController extends Controller
     {
         $payment = Payment::find($id);
 
-        $request->validate([
+        $validated = $request->validate([
             'ticket_id' => ['required'],
             'user_id' => ['required'],
             'payment_date' => ['required'],
@@ -51,13 +67,7 @@ class PaymentController extends Controller
             'status' => ['required'],
         ]);
 
-        $payment->update([
-            'ticket_id' => $request->ticket_id,
-            'user_id' => $request->user_id,
-            'payment_date' => $request->payment_date,
-            'price' => $request->price,
-            'status' => $request->status,
-        ]);
+        $payment->update($validated);
 
         return response()->json([
             'payment' => $payment,

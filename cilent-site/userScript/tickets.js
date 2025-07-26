@@ -1,7 +1,7 @@
 let hasToken = Cookies.get("auth_token");
 let hasAbilities = Cookies.get("abilities");
 
-if (!hasToken) {
+if (!hasToken || !hasAbilities) {
 	alert("Oops, Something went wrong");
 	window.location.href = "/login.html";
 }
@@ -101,25 +101,25 @@ async function loadSeats(selectedSeats = []) {
 loadSeats();
 
 // get select data users
-async function loadUsers(selectedUsers = []) {
-	const url = await axios.get("http://127.0.0.1:8000/api/user/users", {
-		headers,
-	});
-	let users = url.data.users;
-	let dropdown = document.getElementById("input_user");
+// async function loadUsers(selectedUsers = []) {
+// 	const url = await axios.get("http://127.0.0.1:8000/api/user/users", {
+// 		headers,
+// 	});
+// 	let users = url.data.users;
+// 	let dropdown = document.getElementById("input_user");
 
-	if (dropdown) {
-		dropdown.innerHTML = users
-			.filter((user) => user.id !== 1)
-			.map((user) => {
-				const isSelected = selectedUsers.includes(user.id) ? "selected" : "";
-				return `<option value="${user.id}" ${isSelected}>${user.name}</option>`;
-			})
-			.join("");
-	}
-}
+// 	if (dropdown) {
+// 		dropdown.innerHTML = users
+// 			.filter((user) => user.id !== 1)
+// 			.map((user) => {
+// 				const isSelected = selectedUsers.includes(user.id) ? "selected" : "";
+// 				return `<option value="${user.id}" ${isSelected}>${user.name}</option>`;
+// 			})
+// 			.join("");
+// 	}
+// }
 
-loadUsers();
+// loadUsers();
 
 // get select data movies
 async function loadMovies(selectedMovies = []) {
@@ -149,15 +149,15 @@ if (ticket_form) {
 		event.preventDefault();
 
 		let seat = document.getElementById("input_seat");
-		let user = document.getElementById("input_user");
+		// let user = document.getElementById("input_user");
 		let title = document.getElementById("input_title");
 		let code_ticket = document.getElementById("input_code_ticket").value;
 		let purchase_date = document.getElementById("input_date").value;
 
 		let seat_error = document.getElementById("seat_error");
 		seat_error.innerHTML = " ";
-		let user_error = document.getElementById("user_error");
-		user_error.innerHTML = " ";
+		// let user_error = document.getElementById("user_error");
+		// user_error.innerHTML = " ";
 		let title_error = document.getElementById("title_error");
 		title_error.innerHTML = " ";
 		let code_ticket_error = document.getElementById("code_ticket_error");
@@ -168,11 +168,11 @@ if (ticket_form) {
 		try {
 			const data = {
 				seat_id: seat.value,
-				user_id: user.value,
 				movie_id: title.value,
 				code_ticket,
 				purchase_date,
 			};
+
 			await axios.post("http://127.0.0.1:8000/api/user/t_tickets", data, {
 				headers,
 			});
@@ -181,10 +181,12 @@ if (ticket_form) {
 
 			ticket_form.reset();
 			loadSeats();
-			loadUsers();
+			// loadUsers();
 			loadMovies();
 			getData();
 		} catch (error) {
+			console.error(error);
+
 			let errors = error.response?.data?.errors;
 
 			if (errors) {

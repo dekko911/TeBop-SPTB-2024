@@ -1,7 +1,7 @@
 let hasToken = Cookies.get("auth_token");
 let hasAbilities = Cookies.get("abilities");
 
-if (!hasToken) {
+if (!hasToken || !hasAbilities) {
 	alert("Oops, Something went wrong");
 	window.location.href = "/login.html";
 }
@@ -54,8 +54,8 @@ async function getData() {
 								seat.id
 							}, 
               '${seat.show_id}', 
-              '${seat.seat_number}', 
-              '${seat.seat_status}')"
+              '${seat.seat_number}',
+			  '${seat.seat_status}')"
               >
               Edit
               </button>
@@ -154,6 +154,8 @@ if (seat_form) {
 			loadShows();
 			getData();
 		} catch (error) {
+			// console.error(error);
+
 			let errors = error.response?.data?.errors;
 			// let dataError = error.response?.data?.message;
 

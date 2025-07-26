@@ -24,7 +24,7 @@ if (formLogin) {
 			const url = "http://127.0.0.1:8000/api/login";
 
 			const res = await axios.post(url, { email, password });
-			//console.log(res.data);
+			// console.log(res.data);
 
 			if (res.data) {
 				if (res.data.status && res.data.status == "success") {

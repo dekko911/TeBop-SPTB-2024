@@ -1,7 +1,7 @@
 let hasToken = Cookies.get("auth_token");
 let hasAbilities = Cookies.get("abilities");
 
-if (!hasToken) {
+if (!hasToken || !hasAbilities) {
 	alert("Oops, Something went wrong");
 	window.location.href = "/login.html";
 }
@@ -40,12 +40,12 @@ async function getAllData() {
 	const studios = res_studios.data.studios;
 	const roles = res_roles.data.roles;
 
-	function filterDuplicates(array) {
+	const filterDuplicates = (array) => {
 		return array.filter(
 			(role, index, array) =>
 				index === array.findIndex((item) => item.name === role.name)
 		);
-	}
+	};
 
 	let count_users = document.getElementById("user-count");
 	let count_movies = document.getElementById("movie-count");

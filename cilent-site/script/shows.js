@@ -1,7 +1,7 @@
 let hasToken = Cookies.get("auth_token");
 let hasAbilities = Cookies.get("abilities");
 
-if (!hasToken) {
+if (!hasToken || !hasAbilities) {
 	alert("Oops, Something went wrong");
 	window.location.href = "/login.html";
 }

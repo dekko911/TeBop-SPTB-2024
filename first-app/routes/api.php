@@ -18,8 +18,10 @@ Route::get('/user', function (Request $request) {
     return $request->user();
 })->middleware('auth:sanctum');
 
-Route::post('/login', [AuthController::class, 'login'])->name('login');
-Route::post('/sign_up', [UserController::class, 'store'])->name('sign_up');
+Route::middleware('guest')->group(function () {
+    Route::post('/login', [AuthController::class, 'login'])->name('login');
+    Route::post('/sign_up', [UserController::class, 'store'])->name('sign_up');
+});
 
 // untuk route admin
 Route::middleware(['auth:sanctum', 'ability:admin'])->group(function () {
@@ -36,7 +38,7 @@ Route::middleware(['auth:sanctum', 'ability:admin'])->group(function () {
 });
 
 // untuk route user
-Route::middleware(['auth:sanctum', 'ability:user,writer,editor,creator'])->group(function () {
+Route::middleware(['auth:sanctum', 'ability:user'])->group(function () {
     // Route::get('/user/profile', [UserController::class, 'show']);
     Route::apiResource('/user/t_studios', StudioController::class);
     Route::apiResource('/user/users', UserController::class);

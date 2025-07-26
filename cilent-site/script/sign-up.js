@@ -15,7 +15,7 @@ if (user_form) {
 
 			window.location.href = "login.html";
 		} catch (error) {
-			//console.error(error);
+			// console.error(error);
 
 			let emailError = error.response?.data?.message;
 

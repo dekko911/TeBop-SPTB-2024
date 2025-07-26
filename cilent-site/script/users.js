@@ -1,6 +1,7 @@
 let hasToken = Cookies.get("auth_token");
+let hasAbilities = Cookies.get("abilities");
 
-if (!hasToken) {
+if (!hasToken || !hasAbilities) {
 	alert("Oops, Something went wrong");
 	window.location.href = "/login.html";
 }
@@ -22,7 +23,7 @@ async function getData() {
 		}
 	);
 
-	let data = res.data;
+	const data = res.data;
 
 	if (data) {
 		if (data.status && data.status == "failed") {
@@ -33,7 +34,9 @@ async function getData() {
 	let data_users_entry = document.querySelector("#data-users-entry");
 
 	if (data_users_entry) {
-		let users = data.users;
+		const users = data.users;
+
+		if (!users) window.location.href = "/login.html";
 
 		if (users.length > 0) {
 			// jika ada data masih di request, lakukan loading
@@ -62,12 +65,13 @@ async function getData() {
 							.join("")}</td>
 			<td class="align-middle text-sm"><img src="http://127.0.0.1:8000/storage/users/profile/${
 				user.profile
-			}" alt="profile" style="width: 85px; border-radius: 5px;"></td>
-            <td class="ps-4">
+			}" alt="profile" style="width: 85px; border-radius: 4cap;"></td>
+            <td>
               <button type="button" class="btn btn-sm btn-warning my-auto"
                 onclick="update(${user.id}, 
                 '${user.name}', 
-                '${user.email}')">
+                '${user.email}',
+				'${user.profile}')">
                 Edit
               </button>
               <button type="button" class="btn btn-sm btn-danger my-auto" onclick="delete_user(${
@@ -86,6 +90,18 @@ async function getData() {
 }
 
 getData();
+
+const previewImage = () => {
+	const image = document.getElementById("input_profile");
+	const imagePreview = document.getElementById("img-preview");
+
+	imagePreview.style.display = "block";
+
+	if (image) {
+		const temporaryFiles = URL.createObjectURL(image.files[0]);
+		imagePreview.src = temporaryFiles;
+	}
+};
 
 // get search data users
 let input_search = document.querySelector("#search");
@@ -133,16 +149,10 @@ if (user_form) {
 				formData.append("profile", profile);
 			}
 
-			const userData = {};
-
-			formData.forEach((value, key) => {
-				userData[key] = value;
-			});
-
 			if (id) {
-				const res = await axios.patch(
-					"http://127.0.0.1:8000/api/admin/users/" + id,
-					userData,
+				const res = await axios.post(
+					"http://127.0.0.1:8000/api/admin/users/" + id + "?_method=PATCH",
+					formData,
 					{
 						headers,
 					}
@@ -164,8 +174,6 @@ if (user_form) {
 
 				alert("data has added !");
 			}
-
-			// and throw some error is kinda like "duplicate data" in this line.
 
 			user_form.reset();
 			getData();
@@ -197,15 +205,24 @@ if (user_form) {
 }
 
 // update data users
-async function update(id, name, email) {
+const update = (id, name, email, profile) => {
 	let input_name = document.querySelector("#input_name");
 	let input_email = document.querySelector("#input_email");
+	let input_profile = document.querySelector("#input_profile");
+
+	if (profile) {
+		const previewImg = document.getElementById("img-preview");
+		previewImg.style.display = "block";
+
+		previewImg.src = `http://127.0.0.1:8000/storage/users/profile/${profile}`;
+	}
 
 	input_name.value = name;
 	input_email.value = email;
+	input_profile.files[0] = profile;
 
 	document.querySelector("#input_id").value = id;
-}
+};
 
 // delete data users
 async function delete_user(id) {

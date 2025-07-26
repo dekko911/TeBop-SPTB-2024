@@ -2,8 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Enums\CheckStatus;
 use App\Models\Seat;
 use Illuminate\Http\Request;
+use Illuminate\Validation\Rules\Enum;
+use Illuminate\Validation\ValidationException;
 
 class SeatController extends Controller
 {
@@ -13,24 +16,33 @@ class SeatController extends Controller
             $search = request('search');
 
             if ($search) {
-                return $i->where('seat_number', 'like', "%$search%")->orWhere('seat_status', 'like', "%$search%")->orWhereRelation('show', 'showtime', 'like', "%$search%");
+                return $i->whereAny(['seat_number', 'seat_status'], 'like', "%$search%")->orWhereRelation('show', 'showtime', 'like', "%$search%");
             }
         })->get();
 
+        // $statusColor = $seat->seat_status->color();
+
         return response()->json([
             'seats' => $seats,
+            // 'seat_status_color' => $statusColor,
         ]);
     }
 
     public function store(Request $request)
     {
-        $validated = $request->validate([
+        $request->validate([
             'show_id' => ['required'],
             'seat_number' => ['required'],
-            'seat_status' => ['required'],
+            'seat_status' => ['required', new Enum(CheckStatus::class)],
         ]);
 
-        $seat = Seat::create($validated);
+        $status = $request->enum('seat_status', CheckStatus::class);
+
+        $seat = Seat::create([
+            'show_id' => $request->show_id,
+            'seat_number' => $request->seat_number,
+            'seat_status' => $status,
+        ]);
 
         return response()->json([
             'seat' => $seat,
@@ -44,14 +56,20 @@ class SeatController extends Controller
         $request->validate([
             'show_id' => ['required'],
             'seat_number' => ['required'],
-            'seat_status' => ['required'],
         ]);
 
-        $seat = Seat::update([
+        $status = $request->enum('seat_status', CheckStatus::class);
+
+        $seat->update([
             'show_id' => $request->show_id,
             'seat_number' => $request->seat_number,
-            'seat_status' => $request->seat_status,
         ]);
+
+        if ($request->seat_status) {
+            $seat->update([
+                'seat_status' => $status
+            ]);
+        }
 
         return response()->json([
             'seat' => $seat,

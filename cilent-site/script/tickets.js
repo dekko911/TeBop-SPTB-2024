@@ -1,7 +1,7 @@
 let hasToken = Cookies.get("auth_token");
 let hasAbilities = Cookies.get("abilities");
 
-if (!hasToken) {
+if (!hasToken || !hasAbilities) {
 	alert("Oops, Something went wrong");
 	window.location.href = "/login.html";
 }
@@ -104,13 +104,6 @@ async function loadSeats(selectedSeats = []) {
 	let seats = url.data.seats;
 
 	let dropdown = document.getElementById("input_seat");
-	let input_status = document.getElementById("status_seat");
-
-	if (seats.seat_status == "Available") {
-		seats.seat_status = input_status;
-
-		//
-	}
 
 	if (dropdown) {
 		dropdown.innerHTML = seats.map((seat) => {
@@ -174,6 +167,7 @@ if (ticket_form) {
 		let title = document.getElementById("input_title");
 		let code_ticket = document.getElementById("input_code_ticket").value;
 		let purchase_date = document.getElementById("input_date").value;
+		// let seat_status = document.getElementById("status_seat").value;
 
 		let seat_error = document.getElementById("seat_error");
 		seat_error.innerHTML = " ";
@@ -194,8 +188,6 @@ if (ticket_form) {
 				code_ticket,
 				purchase_date,
 			};
-
-			console.log(data);
 
 			if (id) {
 				await axios.patch(
@@ -223,6 +215,8 @@ if (ticket_form) {
 			loadMovies();
 			getData();
 		} catch (error) {
+			console.error(error);
+
 			let errors = error.response?.data?.errors;
 
 			if (errors) {
@@ -281,10 +275,17 @@ async function delete_movie(id) {
 	}
 
 	try {
-		await axios.delete("http://127.0.0.1:8000/api/admin/t_tickets/" + id, {
-			headers,
-		});
-		alert("data has deleted !");
+		const res = await axios.delete(
+			"http://127.0.0.1:8000/api/admin/t_tickets/" + id,
+			{
+				headers,
+			}
+		);
+
+		if (res.data.status && res.data.status == "Ticket deleted") {
+			alert("data has deleted !");
+		}
+
 		getData();
 	} catch (error) {
 		console.error(error);
@@ -292,7 +293,6 @@ async function delete_movie(id) {
 }
 
 // logout
-
 let logout = document.getElementById("logout");
 
 if (logout) {

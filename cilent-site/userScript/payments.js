@@ -99,25 +99,25 @@ async function loadTickets(selectedTickets = []) {
 loadTickets();
 
 //get data select users
-async function loadUsers(selectedUsers = []) {
-	const url = await axios.get("http://127.0.0.1:8000/api/user/users", {
-		headers,
-	});
-	let users = url.data.users;
-	let dropdown = document.getElementById("input_user");
+// async function loadUsers(selectedUsers = []) {
+// 	const url = await axios.get("http://127.0.0.1:8000/api/user/users", {
+// 		headers,
+// 	});
+// 	let users = url.data.users;
+// 	let dropdown = document.getElementById("input_user");
 
-	if (dropdown) {
-		dropdown.innerHTML = users
-			.filter((user) => user.id !== 1)
-			.map((user) => {
-				const isSelected = selectedUsers.includes(user.id) ? "selected" : "";
-				return `<option value="${user.id}" ${isSelected}>${user.name}</option>`;
-			})
-			.join("");
-	}
-}
+// 	if (dropdown) {
+// 		dropdown.innerHTML = users
+// 			.filter((user) => user.id !== 1)
+// 			.map((user) => {
+// 				const isSelected = selectedUsers.includes(user.id) ? "selected" : "";
+// 				return `<option value="${user.id}" ${isSelected}>${user.name}</option>`;
+// 			})
+// 			.join("");
+// 	}
+// }
 
-loadUsers();
+// loadUsers();
 
 // store data tickets
 let payment_form = document.getElementById("payment-form");
@@ -127,15 +127,15 @@ if (payment_form) {
 		event.preventDefault();
 
 		let ticket = document.getElementById("input_ticket");
-		let user = document.getElementById("input_user");
+		// let user = document.getElementById("input_user");
 		let payment_date = document.getElementById("input_date").value;
 		let price = document.getElementById("input_price").value;
 		let status = document.getElementById("input_status").value;
 
 		let ticket_error = document.getElementById("ticket_error");
 		ticket_error.innerHTML = " ";
-		let user_error = document.getElementById("user_error");
-		user_error.innerHTML = " ";
+		// let user_error = document.getElementById("user_error");
+		// user_error.innerHTML = " ";
 		let date_error = document.getElementById("date_error");
 		date_error.innerHTML = " ";
 		let price_error = document.getElementById("price_error");
@@ -146,7 +146,6 @@ if (payment_form) {
 		try {
 			const data = {
 				ticket_id: ticket.value,
-				user_id: user.value,
 				payment_date,
 				price,
 				status,
@@ -160,7 +159,7 @@ if (payment_form) {
 			payment_form.reset();
 
 			loadTickets();
-			loadUsers();
+			// loadUsers();
 			getData();
 		} catch (error) {
 			let errors = error.response?.data?.errors;
