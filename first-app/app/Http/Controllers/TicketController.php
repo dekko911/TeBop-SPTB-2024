@@ -34,11 +34,9 @@ class TicketController extends Controller
             'purchase_date' => ['required'],
         ]);
 
-        // INI BELUM SELESAI YA
         $seat = Seat::findOrFail($request->seat_id);
 
-        // BELUM DAPAT CARA NYA, BIAR DAPAT ROLE NYA
-        if (Auth::user()->id === 1) {
+        if (Auth::user()->tokenCan('admin')) {
             $status = $seat->seat_status;
 
             if ($status === CheckStatus::AVAILABLE) {
@@ -60,7 +58,7 @@ class TicketController extends Controller
                     'seat_status' => $status,
                 ]);
             }
-        } else {
+        } elseif (Auth::user()->tokenCan('user')) {
             $status = $seat->seat_status;
 
             if ($status === CheckStatus::AVAILABLE) {
@@ -83,7 +81,6 @@ class TicketController extends Controller
                 ]);
             }
         }
-        // BANGSAT
 
         return response()->json([
             'ticket' => $ticket,

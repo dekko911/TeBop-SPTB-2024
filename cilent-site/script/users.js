@@ -182,6 +182,7 @@ if (user_form) {
 
 			// untuk peringatan tidak ada masukan input
 			let errors = error.response?.data?.errors;
+			const errorProfile = error.response?.status === 413;
 
 			if (errors) {
 				if (errors.name) {
@@ -199,6 +200,10 @@ if (user_form) {
 				if (errors.profile) {
 					profile_error.innerHTML = errors.profile;
 				}
+			}
+
+			if (errorProfile) {
+				profile_error.innerHTML = "TERLALU GWUDEE SIZE FILE LO!";
 			}
 		}
 	});
@@ -248,7 +253,7 @@ async function delete_user(id) {
 
 		getData();
 	} catch (error) {
-		console.log(error);
+		// console.log(error);
 	}
 }
 

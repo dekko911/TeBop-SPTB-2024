@@ -27,7 +27,7 @@ class AuthController extends Controller
                 ]);
             }
 
-            $token = $user->createToken($user->name, $roles, now('Asia/Kuala_Lumpur')->addHours(6));
+            $token = $user->createToken($user->name, $roles, now()->addHours(6));
 
             return response()->json([
                 'status' => 'success',

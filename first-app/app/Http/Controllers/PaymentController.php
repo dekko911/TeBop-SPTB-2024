@@ -32,7 +32,7 @@ class PaymentController extends Controller
             'status' => ['required'],
         ]);
 
-        if (Auth::user()->id === 1) {
+        if (Auth::user()->tokenCan('admin')) {
             $payment = Payment::create([
                 'ticket_id' => $request->ticket_id,
                 'user_id' => $request->user_id,
@@ -40,7 +40,7 @@ class PaymentController extends Controller
                 'price' => $request->price,
                 'status' => $request->status,
             ]);
-        } else {
+        } elseif (Auth::user()->tokenCan('user')) {
             $payment = Payment::create([
                 'ticket_id' => $request->ticket_id,
                 'user_id' => Auth::id(),
