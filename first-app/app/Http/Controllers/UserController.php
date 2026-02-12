@@ -47,9 +47,9 @@ class UserController extends Controller
         }
 
         $user = User::create([
-            'name' => $request->name,
-            'email' => $request->email,
-            'password' => $request->password,
+            'name' => $request->__get('name'),
+            'email' => $request->__get('email'),
+            'password' => $request->__get('password'),
             'profile' => $filename ?? '-',
         ]);
 
@@ -74,6 +74,7 @@ class UserController extends Controller
         }
 
         if ($request->file('profile')) {
+            // cari sesuai dengan id yang ada di param, lalu hapus
             if ($user->profile) {
                 Storage::disk('public')->delete("users/profile/$user->profile");
             }
@@ -85,15 +86,15 @@ class UserController extends Controller
         }
 
         $user->update([
-            'name' => $request->name,
-            'email' => $request->email,
+            'name' => $request->__get('name'),
+            'email' => $request->__get('email'),
         ]);
 
-        if ($request->password) {
-            $user->update(['password' => $request->password]);
+        if ($request->__get('password')) {
+            $user->update(['password' => $request->__get('password')]);
         }
 
-        if ($request->profile) {
+        if ($request->__get('profile')) {
             $user->update(['profile' => $filename]);
         }
 
@@ -105,15 +106,15 @@ class UserController extends Controller
 
     public function destroy(User $user)
     {
-        if ($user->profile) {
-            Storage::disk('public')->delete("users/profile/$user->profile");
-        }
-
         if ($user['id'] === 1) {
             throw new \Exception('LO GA BOLEH KE HAPUS');
         }
 
-        User::destroy($user->id);
+        if ($user->profile) {
+            Storage::disk('public')->delete("users/profile/$user->profile");
+        }
+
+        User::destroy($user->__get('id'));
 
         return response()->json([
             'status' => 'User deleted',

@@ -50,10 +50,10 @@ class MovieController extends Controller
         ]);
 
         $movie->update([
-            'title' => $request->title,
-            'genre_id' => $request->genre_id,
-            'duration' => $request->duration,
-            'release_date' => $request->release_date,
+            'title' => $request->__get('title'),
+            'genre_id' => $request->__get('genre_id'),
+            'duration' => $request->__get('duration'),
+            'release_date' => $request->__get('release_date'),
         ]);
 
         return response()->json([

@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -16,6 +17,13 @@ class Payment extends Model
         'price',
         'status',
     ];
+
+    protected $appends = ['payment_date_iso'];
+
+    public function getPaymentDateIsoAttribute(): string
+    {
+        return Carbon::parse($this->__get('payment_date'))->isoFormat('DD MMMM YYYY, HH:mm');
+    }
 
     public function ticket() // with(['ticket'])
     {

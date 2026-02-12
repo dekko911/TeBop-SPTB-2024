@@ -54,7 +54,7 @@ async function getData() {
                     </td>
                     <td class="align-middle text-sm">${ticket.code_ticket}</td>
                     <td class="align-middle text-sm">
-                    ${ticket.purchase_date}
+                    ${ticket.purchase_date_iso}
                       </td>
                       <td class="ps-4">
                       <button type="button" class="btn btn-warning my-auto" onclick="update(${

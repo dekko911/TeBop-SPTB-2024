@@ -65,7 +65,7 @@ async function getData() {
 							.join("")}</td>
 			<td class="align-middle text-sm"><img src="http://127.0.0.1:8000/storage/users/profile/${
 				user.profile
-			}" alt="profile" style="width: 85px; border-radius: 4cap;"></td>
+			}" alt="profile" style="width: 80px; height: 80px; border-radius: 4cap;"></td>
             <td>
               <button type="button" class="btn btn-sm btn-warning my-auto"
                 onclick="update(${user.id}, 

@@ -33,22 +33,18 @@ class PaymentController extends Controller
         ]);
 
         if (Auth::user()->tokenCan('admin')) {
-            $payment = Payment::create([
-                'ticket_id' => $request->ticket_id,
-                'user_id' => $request->user_id,
-                'payment_date' => $request->payment_date,
-                'price' => $request->price,
-                'status' => $request->status,
-            ]);
-        } elseif (Auth::user()->tokenCan('user')) {
-            $payment = Payment::create([
-                'ticket_id' => $request->ticket_id,
-                'user_id' => Auth::id(),
-                'payment_date' => $request->payment_date,
-                'price' => $request->price,
-                'status' => $request->status,
-            ]);
+            $userId = $request->__get('user_id');
+        } else if (Auth::user()->tokenCan('user')) {
+            $userId = Auth::id();
         }
+
+        $payment = Payment::create([
+            'ticket_id' => $request->__get('ticket_id'),
+            'user_id' => $userId,
+            'payment_date' => $request->__get('payment_date'),
+            'price' => $request->__get('price'),
+            'status' => $request->__get('status'),
+        ]);
 
         return response()->json([
             'payment' => $payment

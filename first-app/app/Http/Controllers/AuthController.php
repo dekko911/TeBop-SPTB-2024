@@ -16,7 +16,7 @@ class AuthController extends Controller
         ]);
 
         if (Auth::attempt($credentials)) {
-            $user = User::where('email', $request->email)->first();
+            $user = User::where('email', $request->__get('email'))->first();
 
             $roles = $user->roles->pluck('name')->all();
 

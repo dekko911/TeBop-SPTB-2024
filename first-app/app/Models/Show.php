@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -14,6 +15,13 @@ class Show extends Model
         'studio_id',
         'showtime',
     ];
+
+    protected $appends = ['showtime_iso'];
+
+    public function getShowtimeIsoAttribute(): string
+    {
+        return Carbon::parse($this->__get('showtime'))->isoFormat('DD MMMM YYYY, HH:mm');
+    }
 
     public function seats() // with(['seats'])
     {

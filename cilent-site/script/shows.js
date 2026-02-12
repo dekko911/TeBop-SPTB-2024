@@ -50,7 +50,9 @@ async function getData() {
                     <td class="align-middle text-sm">${
 											show?.studio?.studio
 										}</td>
-                    <td class="align-middle text-sm">${show.showtime}</td>
+                    <td class="align-middle text-sm">${
+											show.showtime_iso
+										} WITA</td>
                       <td class="ps-4">
                       <button type="button" class="btn btn-warning my-auto" onclick="update(${
 												show.id

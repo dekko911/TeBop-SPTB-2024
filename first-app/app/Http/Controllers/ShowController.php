@@ -48,9 +48,9 @@ class ShowController extends Controller
         ]);
 
         $show->update([
-            'movie_id' => $request->movie_id,
-            'studio_id' => $request->studio_id,
-            'showtime' => $request->showtime,
+            'movie_id' => $request->__get('movie_id'),
+            'studio_id' => $request->__get('studio_id'),
+            'showtime' => $request->__get('showtime'),
         ]);
 
         return response()->json([

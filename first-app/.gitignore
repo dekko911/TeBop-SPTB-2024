@@ -6,6 +6,7 @@
 /storage/*.key
 /storage/pail
 /vendor
+docker-compose.yml
 .editorconfig
 .env
 .env.example

@@ -29,17 +29,24 @@ class RoleController extends Controller
             'name' => ['required'],
         ]);
 
-        if ($validated['name'] == 'admin' && $validated['user_id'] == 1) {
-            return response()->json([
-                'message' => 'Nama Role Tidak Boleh Bernama Admin.',
-            ], 422);
+        switch ($validated['name']) {
+            case 'admin':
+                if ($validated['user_id'] != 1) {
+                    return response()->json([
+                        'message' => 'Nama Role Tidak Boleh Bernama Admin.',
+                    ], 403);
+                }
+            case 'user':
+                $role = Role::create($validated);
+
+                return response()->json([
+                    'role' => $role
+                ]);
+            default:
+                return response()->json([
+                    'message' => 'Hanya admin & user saja.',
+                ], 401);
         }
-
-        $role = Role::create($validated);
-
-        return response()->json([
-            'role' => $role
-        ]);
     }
 
     public function destroy($id)

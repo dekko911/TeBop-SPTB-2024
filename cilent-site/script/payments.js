@@ -52,7 +52,7 @@ async function getData() {
             ${payment?.user?.name}
             </td>
             <td class="align-middle text-sm">
-            ${payment.payment_date}
+            ${payment.payment_date_iso} WITA
             </td>
             <td class="align-middle text-sm">${payment.price}</td>
             <td class="align-middle text-sm">${payment.status}</td>

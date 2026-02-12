@@ -39,8 +39,8 @@ class SeatController extends Controller
         $status = $request->enum('seat_status', CheckStatus::class);
 
         $seat = Seat::create([
-            'show_id' => $request->show_id,
-            'seat_number' => $request->seat_number,
+            'show_id' => $request->__get('show_id'),
+            'seat_number' => $request->__get('seat_number'),
             'seat_status' => $status,
         ]);
 
@@ -61,11 +61,11 @@ class SeatController extends Controller
         $status = $request->enum('seat_status', CheckStatus::class);
 
         $seat->update([
-            'show_id' => $request->show_id,
-            'seat_number' => $request->seat_number,
+            'show_id' => $request->__get('show_id'),
+            'seat_number' => $request->__get('seat_number'),
         ]);
 
-        if ($request->seat_status) {
+        if ($request->__get('seat_status')) {
             $seat->update([
                 'seat_status' => $status
             ]);

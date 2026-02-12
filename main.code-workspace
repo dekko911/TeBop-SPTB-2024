@@ -1,14 +1,14 @@
 {
-	"folders": [
-		{
-			"path": "first-app"
-		},
-		{
-			"path": "cilent-site"
-		}
-	],
-	"settings": {
-		"liveServer.settings.multiRootWorkspaceName": "cilent-site",
-		"php.version": "8.3"
-	}
+  "folders": [
+    {
+      "path": "first-app"
+    },
+    {
+      "path": "cilent-site"
+    }
+  ],
+  "settings": {
+    "liveServer.settings.multiRootWorkspaceName": "cilent-site",
+    "php.version": "8.4"
+  }
 }

@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -15,6 +16,18 @@ class Movie extends Model
         'duration',
         'release_date',
     ];
+
+    protected $appends = ['duration_iso', 'release_date_iso'];
+
+    public function getDurationIsoAttribute(): string
+    {
+        return Carbon::parse($this->__get('duration'))->isoFormat('HH:mm');
+    }
+
+    public function getReleaseDateIsoAttribute(): string
+    {
+        return Carbon::parse($this->__get('release_date'))->isoFormat('DD MMMM YYYY');
+    }
 
     public function shows() // with(['shows'])
     {

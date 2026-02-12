@@ -28,18 +28,6 @@ class Seat extends Model
         ];
     }
 
-    // this a event for listener CheckStatus changes.
-    // public function setStatusAttribute(CheckStatus $newStatus)
-    // {
-    //     $oldStatus = $this->seat_status ?? null;
-
-    //     $this->attributes['seat_status'] = $newStatus->value;
-
-    //     if ($oldStatus !== null && $oldStatus !== $newStatus) {
-    //         event(new CheckStatusChanged($this, $oldStatus, $newStatus));
-    //     }
-    // }
-
     public function tickets() // with(['tickets'])
     {
         return $this->hasMany(Ticket::class, 'seat_id', 'id');

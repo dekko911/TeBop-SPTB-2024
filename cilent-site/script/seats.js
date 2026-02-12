@@ -46,7 +46,9 @@ async function getData() {
 				elementForTbody += `
         <tr class="text-center">
             <td class="align-middle text-sm">${key + 1}</td>
-            <td class="align-middle text-sm">${seat?.show?.showtime}</td>
+            <td class="align-middle text-sm">${
+							seat?.show?.showtime_iso
+						} WITA</td>
             <td class="align-middle text-sm">${seat.seat_number}</td>
             <td class="align-middle text-sm">${seat.seat_status}</td>
               <td class="ps-4">

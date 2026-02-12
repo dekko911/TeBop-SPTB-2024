@@ -34,52 +34,28 @@ class TicketController extends Controller
             'purchase_date' => ['required'],
         ]);
 
-        $seat = Seat::findOrFail($request->seat_id);
+        $seat = Seat::findOrFail($request->__get('seat_id'));
 
         if (Auth::user()->tokenCan('admin')) {
-            $status = $seat->seat_status;
+            $userId = $request->__get('user_id');
+        } else if (Auth::user()->tokenCan('user')) {
+            $userId = Auth::id();
+        }
 
-            if ($status === CheckStatus::AVAILABLE) {
-                $status = CheckStatus::NOT_AVAILABLE;
-            }
+        $ticket = Ticket::create([
+            'seat_id' => $request->__get('seat_id'),
+            'user_id' => $userId,
+            'movie_id' => $request->__get('movie_id'),
+            'code_ticket' => $request->__get('code_ticket'),
+            'purchase_date' => $request->__get('purchase_date'),
+        ]);
 
-            $ticket = Ticket::create([
-                'seat_id' => $request->seat_id,
-                'user_id' => $request->user_id,
-                'movie_id' => $request->movie_id,
-                'code_ticket' => $request->code_ticket,
-                'purchase_date' => $request->purchase_date,
+        if ($request->__get('seat_id')) {
+            $seat->update([
+                'show_id' => $seat->__get('show_id'),
+                'seat_number' => (string) $seat->__get('seat_number'),
+                'seat_status' => CheckStatus::NOT_AVAILABLE->value,
             ]);
-
-            if ($request->seat_id) {
-                $seat->update([
-                    'show_id' => $seat->show_id,
-                    'seat_number' => (string) $seat->seat_number,
-                    'seat_status' => $status,
-                ]);
-            }
-        } elseif (Auth::user()->tokenCan('user')) {
-            $status = $seat->seat_status;
-
-            if ($status === CheckStatus::AVAILABLE) {
-                $status = CheckStatus::NOT_AVAILABLE;
-            }
-
-            $ticket = Ticket::create([
-                'seat_id' => $request->seat_id,
-                'user_id' => Auth::id(),
-                'movie_id' => $request->movie_id,
-                'code_ticket' => $request->code_ticket,
-                'purchase_date' => $request->purchase_date,
-            ]);
-
-            if ($request->seat_id) {
-                $seat->update([
-                    'show_id' => $seat->show_id,
-                    'seat_number' => (string) $seat->seat_number,
-                    'seat_status' => $status,
-                ]);
-            }
         }
 
         return response()->json([
